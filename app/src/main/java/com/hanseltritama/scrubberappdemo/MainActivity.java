@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     AudioManager audioManager; // To communicate with Android audio system
@@ -38,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
         final SeekBar scrubber = findViewById(R.id.seekBar2);
         volumeControl.setMax(maxVolume);
         volumeControl.setProgress(currVolume);
+
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                scrubber.setProgress(mediaPlayer.getCurrentPosition());
+            }
+        }, 0, 1000);
 
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
